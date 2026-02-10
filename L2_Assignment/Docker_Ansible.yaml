@@ -1,0 +1,32 @@
+---
+- name: Install Docker and Deploy Starbucks App
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Install docker and dependencies
+      dnf:
+        name:
+          - docker
+          - python3-pip
+        state: present
+
+    - name: Start and enable docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add ec2-user to docker group
+      user:
+        name: ec2-user
+        groups: docker
+        append: yes
+
+    - name: Pull Starbucks Docker image from Docker Hub
+      command: docker pull akhilkumar119/starbucks:latest
+
+    - name: Run Starbucks container
+      command: docker run -d --name starbucks-app -p 3000:3000 akhilkumar119/starbucks:latest
+      ignore_errors: yes
