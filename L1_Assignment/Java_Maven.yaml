@@ -1,0 +1,26 @@
+---
+- name: Setup Java Maven Application Build Server
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Install Java 11
+      dnf:
+        name: java-11-openjdk
+        state: present
+
+    - name: Install Maven
+      dnf:
+        name: maven
+        state: present
+
+    - name: Create build directory
+      file:
+        path: /opt/build
+        state: directory
+        mode: '0755'
+
+    - name: Print success message
+      debug:
+        msg: "Java and Maven installation completed successfully!"
