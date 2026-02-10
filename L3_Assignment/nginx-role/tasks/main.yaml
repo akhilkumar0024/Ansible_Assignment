@@ -1,0 +1,14 @@
+---
+# Task 1: Install nginx
+- name: Install Nginx
+  dnf:
+    name: nginx
+    state: present
+  notify: Restart Nginx Service      # triggers handler
+
+# Task 2: Start nginx service
+- name: Start Nginx Service
+  service:
+    name: nginx
+    state: started
+    enabled: yes
