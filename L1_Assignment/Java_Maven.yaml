@@ -4,11 +4,11 @@
   become: yes
 
   tasks:
-
-    - name: Install Java 11
+    - name: Install default Java JDK (Development Kit)
       dnf:
-        name: java-11-openjdk
+        name: java-devel
         state: present
+        update_cache: yes
 
     - name: Install Maven
       dnf:
@@ -21,6 +21,12 @@
         state: directory
         mode: '0755'
 
+    - name: Verify Installations
+      shell: "java -version && mvn -version"
+      register: version_output
+
     - name: Print success message
       debug:
-        msg: "Java and Maven installation completed successfully!"
+        msg: 
+          - "Java and Maven installation completed successfully!"
+          - "{{ version_output.stderr_lines }}"
